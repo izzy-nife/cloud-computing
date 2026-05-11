@@ -8,11 +8,6 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    # This line tells GitHub to run all steps inside your subfolder
-    defaults:
-      run:
-        working-directory: BACKROADS-CIVIL-APP
-
     steps:
       - uses: actions/checkout@v4
       
@@ -30,5 +25,5 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ secrets.AWS_REGION }}
 
-      # Note: Since we are in the subfolder, sync will look for BACKROADS-CIVIL-APP/dist
+      # Use ./dist because your project is now in the root
       - run: aws s3 sync ./dist s3://${{ secrets.S3_BUCKET_NAME }} --delete
