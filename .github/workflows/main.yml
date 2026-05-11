@@ -8,16 +8,27 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    # This line tells GitHub to run all steps inside your subfolder
+    defaults:
+      run:
+        working-directory: BACKROADS-CIVIL-APP
+
     steps:
       - uses: actions/checkout@v4
+      
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
+          
       - run: npm install
+      
       - run: npm run build
+      
       - uses: aws-actions/configure-aws-credentials@v4
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ secrets.AWS_REGION }}
+
+      # Note: Since we are in the subfolder, sync will look for BACKROADS-CIVIL-APP/dist
       - run: aws s3 sync ./dist s3://${{ secrets.S3_BUCKET_NAME }} --delete
