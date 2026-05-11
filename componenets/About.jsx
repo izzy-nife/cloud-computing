@@ -1,6 +1,6 @@
 import React from 'react'
 import aboutImg from "../assets/images/about.jpeg" 
-import Title from './title'
+import Title from './Title'
 
 const about = () => {
   return (
